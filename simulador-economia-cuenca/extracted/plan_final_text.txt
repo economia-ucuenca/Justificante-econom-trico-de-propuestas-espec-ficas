@@ -1,0 +1,56 @@
+COLECTIVO INDEPENDIENTE UNIVERSITARIO
+PLAN DE TRABAJO
+ASOCIACIÓN ESCUELA DE LA CARRERA DE  ECONOMÍA
+FACULTAD DE CIENCIAS ECONÓMICAS Y ADMINISTRATIVAS
+PRESIDENTA/E:
+Edisson Santiago León Zamora
+VICEPRESIDENTA/E:
+Paolo Alejandro León Ramírez
+SECRETARIA/O:
+Aylin Estefanía Paucar Mendoza
+PLAN DE TRABAJO
+EJE ACADÉMICO Y DE FORMACIÓN PROFESIONAL
+• Charlas, foros y conversatorios con profesionales y graduados de la carrera de Economía.
+• Ciclo Permanente de Charlas Magistrales “Economía en Acción”: conferencias continuas a lo largo del semestre con autoridades del Banco Central, INEC y analistas económicos, con entrega de certificados con aval académico de la Facultad.
+• Talleres de herramientas económicas: Stata, Python y Excel avanzado.
+• Talleres de Inteligencia Artificial para Economistas: integración de IA en redacción de papers, análisis de datos y programación de modelos económicos.
+• Semillero “Economía + Código”: club tecnológico donde los estudiantes fusionen finanzas y programación (HTML, CSS, JavaScript) para construir calculadoras de riesgo país, simuladores de amortización y colaborar en el portal oficial de la carrera.
+• Lanzamiento del Portal Web Interactivo: página oficial desarrollada desde cero (HTML, CSS y JavaScript) que alojará el banco de resoluciones, simuladores de exámenes y buzón de consultas.
+• Simuladores de Exámenes en el Portal Web: módulos interactivos con ejercicios contra reloj y resolución paso a paso de los errores cometidos.
+• Banco Oficial de Resoluciones: base de datos validada con talleres, demostraciones matemáticas y exámenes pasados resueltos, clasificados por materia y docente.
+• Análisis de Tendencias Locales: promover y premiar proyectos que resuelvan problemáticas del entorno ecuatoriano, como el uso del Modelo de Bass para la adopción de vehículos eléctricos o modelos Baumol-Tobin aplicados a la liquidez corporativa en Ecuador.
+• Simulador de Inversiones y Política Monetaria: competencia semestral con simuladores virtuales donde los estudiantes apliquen modelos teóricos para gestionar portafolios en escenarios ficticios.
+• Programa de Apadrinamiento Académico: estudiantes de primeros ciclos emparejados con un mentor de ciclos superiores para orientación real sobre la carrera.
+• Clínicas de Emergencia en materias filtro (Microeconomía, Econometría) con estudiantes destacados de ciclos superiores antes de exámenes parciales y finales.
+• Difusión de oportunidades de prácticas, investigación, vinculación y titulación.
+EJE DE REPRESENTACIÓN Y DEFENSA ESTUDIANTIL
+• Levantamiento periódico de necesidades e inquietudes de los estudiantes de Economía.
+• Seguimiento a solicitudes académicas y administrativas ante autoridades de la facultad.
+• Participación activa en espacios de diálogo, cogobierno y representación universitaria.
+• Gestión de prácticas remuneradas coordinadas con el Rectorado y organismos externos.
+• Rendición periódica de cuentas sobre la gestión de la Asociación Escuela.
+EJE DE INTEGRACIÓN Y VIDA UNIVERSITARIA
+• Bienvenida e integración para estudiantes de nuevo ingreso con recorrido por la facultad.
+• Liga Universitaria de E-Sports y Cultura: torneos oficiales de videojuegos cerrados con festivales culturales y bandas en vivo para fomentar la integración y la autoGestión.
+• Eventos culturales, deportivos y recreativos para la comunidad estudiantil de Economía.
+• Iniciativas de Economía Circular: campañas de intercambio de libros, calculadoras y apuntes entre estudiantes de distintos ciclos para reducir gastos.
+• Feria de Emprendimiento Económico y espacios de intercambio entre estudiantes, graduados y profesionales.
+EJE DE BIENESTAR ESTUDIANTIL
+• Jornadas de bienestar, salud mental y autocuidado para estudiantes de la carrera.
+• Talleres sobre manejo del estrés académico y organización del tiempo.
+• Donación de canastas navideñas a estudiantes foráneos en situación de vulnerabilidad.
+• Difusión de servicios de apoyo institucional disponibles para los estudiantes.
+• Promoción de ambientes de respeto, inclusión y sana convivencia universitaria.
+EJE DE VINCULACIÓN Y PROYECCIÓN
+• Convenio Marco con el Municipio – “Consultoría Técnica Estudiantil”: acuerdo formal con la Dirección de Planificación para que estudiantes de ciclos avanzados actúen como consultores junior en análisis de impacto socioeconómico, presupuestos participativos y estudios de movilidad urbana.
+• Visitas técnicas a instituciones públicas como el Banco Central, el Municipio y Ministerios donde se toman decisiones macroeconómicas del país.
+• Ruta Financiera y de Política Pública: gira técnica anual (nacional o internacional) coordinada con las autoridades universitarias.
+• Observatorio de Mercados Locales: equipo estudiantil que publique boletines sobre comportamiento de mercados de la ciudad (precios, depreciación de activos, etc.).
+• Alianzas con empresas privadas para apoyo estudiantil y proyectos de responsabilidad social.
+• Fortalecimiento de redes de contacto con profesionales, graduados y organismos económicos.
+EJE DE COMUNICACIÓN Y PARTICIPACIÓN
+• Actualización y gestión activa de redes sociales y canales oficiales de la Aso. Escuela.
+• Boletín Económico Estudiantil: publicación mensual digital con artículos de opinión, análisis de coyuntura del Ecuador y resúmenes de proyectos de investigación estudiantil.
+• Podcast Oficial de la Facultad: videopodcast de la Asociación para entrevistar a docentes, investigadores y líderes empresariales sobre coyuntura económica.
+• Realización de encuestas periódicas para identificar necesidades y recoger sugerencias estudiantiles.
+• Transparencia y acceso permanente a la información de gestión y finanzas de la asociación.
