@@ -1,0 +1,164 @@
+UNIVERSIDAD DE CUENCA
+FACULTAD DE CIENCIAS ECONÓMICAS Y ADMINISTRATIVAS
+CARRERA DE ECONOMÍA
+“Correlatos del Fracaso Académico Temprano: Un Análisis Exploratorio con Modelos de Conteo de Dos Partes”
+18 de julio del 2025
+Albán Lema Erick Daniel
+Criollo Castro Steven Armando
+Jara Jarrín Joseline Juliana
+Pineda Domínguez Juan Carlos
+Valencia Olivo Cristian Fabricio
+Resumen
+Este estudio explora los determinantes del número de materias reprobadas en primer ciclo a través de un marco dual que distingue entre factores que confieren “inmunidad” estructural y los que determinan la “supervivencia” semestral; es decir, aquellos que por sus condiciones no son propensos y quienes sí a reprobar materias. Para su análisis empírico, se emplea un Modelo Poisson Inflado en Ceros (ZIP), basado en una muestra probabilística de 220 estudiantes de segundo ciclo de la Facultad de Ciencias Económicas y Administrativas de la Universidad de Cuenca (FCEA). En cuanto a los resultados, la ecuación de inflación refleja que la carrera elegida, el tener un espacio apropiado para el estudio y el puntaje de ingreso aumentan la probabilidad de inmunidad, mientras que los shocks de ingreso la reducen. Además, la ecuación de conteo indica que, para el grupo vulnerable, una mayor disciplina académica reduce el fracaso, mientras que los shocks de salud y poseer un espacio de estudio lo incrementan. Estos hallazgos sugieren que las políticas de apoyo deben ser diferenciadas, enfocándose en fortalecer el capital inicial de los estudiantes y en proveer herramientas para la resiliencia académica.
+Palabras clave: Reprobación, ZIP, modelo dual.
+Introducción
+El fracaso académico en los primeros ciclos universitarios es un problema crítico que afecta la eficiencia del sistema educativo. Para los estudiantes, esto representa costos financieros directos y un considerable desgaste psicológico que puede llevarlos a abandonar sus estudios (Miller, 1986). Para la sociedad, se traduce en un uso poco eficiente de los recursos públicos y una menor rentabilidad de la inversión en educación (UNESCO, 2022; OCDE, 2023). Este estudio aborda el problema proponiendo que no todos los estudiantes enfrentan el mismo riesgo. Nuestra investigación busca responder dos preguntas centrales: primero, ¿existen realmente dos grupos distintos, uno "inmune" al fracaso y otro "en riesgo"? Y segundo, ¿qué factores específicos explican la pertenencia a cada grupo y determinan el rendimiento de aquellos que se encuentran en la categoría de riesgo?
+La principal contribución de este trabajo es que se aleja de los enfoques tradicionales. La mayoría de las investigaciones sobre el rendimiento académico utilizan modelos que calculan un "efecto promedio" para todos los estudiantes, asumiendo que un factor como la disciplina o el puntaje de ingreso funciona de la misma manera para todos (Cameron & Trivedi, 2013). Este método puede ocultar diferencias fundamentales entre subgrupos de estudiantes. Nuestro estudio busca llenar este vacío al probar la hipótesis de que existen dos procesos distintos en juego. Proponemos una división clave: un conjunto de recursos iniciales actúa protegiendo a ciertos estudiantes del fracaso, mientras que un conjunto diferente de comportamientos funciona como determinantes del éxito en aquellos que ya son vulnerables.
+Este marco dual no es una idea aislada, sino que se construye sobre tres corrientes de investigación bien establecidas en la economía. Primero, la teoría de la formación dinámica de habilidades (Heckman, 2007) respalda la idea de un grupo "inmune", al sugerir que el capital cognitivo inicial de un estudiante es un factor protector clave. Segundo, la investigación sobre la importancia de las habilidades no cognitivas (Heckman & Rubinstein, 2001) nos ayuda a entender al grupo "vulnerable", donde rasgos como la autodisciplina funcionan como insumos de comportamiento cruciales para el éxito (Barca et al., 2003). Tercero, se reconoce que el entorno del estudiante, como tener un espacio adecuado para estudiar, afecta la eficacia de estos comportamientos (Artunduaga Murillo, 2008). Nuestro modelo integra estas tres perspectivas para probar si realmente tienen un poder explicativo distinto dentro de esta estructura dual.
+Marco Teórico
+Proponemos un marco teórico micro-fundamentado que segrega a los estudiantes en dos estados: uno de "Inmunidad Estructural", gobernado por un umbral de capital inicial, y un estado de "Producción Académica bajo Vulnerabilidad", modelado a través de una función de producción estocástica. El modelo econométrico ZIP se presenta como la estrategia empírica idónea para estimar los parámetros de esta teoría.
+1. Determinación del Estado: Un Modelo de Umbral de Resiliencia Estructural
+Definimos al estudiante , que ingresa al primer ciclo universitario dotado de un vector de capital inicial . Este vector encapsula dimensiones de capital humano (habilidades cognitivas previas), físico (entorno de estudio) y contextual (estabilidad económica del hogar) acumuladas hasta el momento del ingreso. La capacidad del estudiante para ser estructuralmente inmune al fracaso se modela a través de una variable latente no observable , que representa su Índice de Resiliencia Estructural. Este índice se especifica como una función que depende de  y un término de error estocástico :
+Donde  es el vector de parámetros que captura los retornos de dicho capital en la generación de resiliencia. El estudiante  se encuentra en el estado de Inmunidad Estructural (denotado por la variable binaria ) si su  supera un umbral (normalizado en cero por motivos de identificación):
+Para los estudiantes en este estado (), el número de materias reprobadas, , es un cero estructural:
+Se teoriza que su dotación de capital es suficiente para absorber los shocks académicos estándar del primer ciclo, haciendo que la probabilidad de fracaso sea nula independientemente de sus decisiones de esfuerzo marginal durante el semestre. La probabilidad de pertenecer a este estado viene dada por:
+Donde  es la función de distribución acumulada de , que se asume logística en la implementación del modelo ZIP. Las hipótesis sobre la pertenencia a este estado se derivan directamente de la composición de :
+H1: Capital Cognitivo Inicial (Puntaje de Ingreso): Siguiendo la teoría de formación dinámica de habilidades (Heckman, 2007), el puntaje de ingreso es una proxy del stock de capital cognitivo. Un mayor capital cognitivo incrementa el índice , elevando la probabilidad de superar el umbral de inmunidad. Predicción:
+H2: Capital Contextual y Vulnerabilidad a Shocks (Entorno): El capital del entorno, como un espacio de estudio exclusivo, es un componente de  que reduce los costos de transacción del aprendizaje. Por el contrario, un shock exógeno de ingreso () se modela como una depreciación no anticipada y severa de este capital, afectando directamente el índice de resiliencia:
+Este shock ataca directamente la probabilidad de permanecer al estado de inmunidad. Predicción:  y
+H3: Heterogeneidad en los Requerimientos de Capital (Carrera): Las carreras difieren en el umbral de capital específico que demandan, lo que modifica la probabilidad de que la dotación de capital del estudiante sea suficiente. Se incluye como determinante estructural del estado, si bien se reconoce que esta variable es potencialmente endógena. La interpretación de su coeficiente debe ser cautelosa, ya que podría capturar efectos de autoselección no observados.
+2. La Función de Producción Académica bajo Vulnerabilidad
+Para el subconjunto de estudiantes que no alcanza el umbral de resiliencia (), el resultado académico no está predeterminado. Estos agentes operan en un estado de vulnerabilidad, donde el número de materias reprobadas, , es el resultado de una función de producción académica estocástica. El resultado esperado de esta función:
+Depende de un vector  de insumos conductuales y shocks de productividad que el estudiante enfrenta durante el semestre. Especificamos la función de producción en su forma exponencial:
+Para este grupo, es posible obtener un resultado de cero fracasos (), pero este es un cero muestral, logrado a través de la gestión eficaz de insumos. Las hipótesis para este estado se centran en los determinantes de la productividad marginal del estudiante:
+H4: Insumo de Comportamiento (Disciplina Académica): Se usaron las horas de estudio y la asistencia como proxys de la disciplina, el cual es el principal insumo controlable por el estudiante en su función de producción. En consonancia con la literatura sobre la importancia de las habilidades no cognitivas (Heckman & Rubinstein, 2001), se espera que un mayor nivel de esta variable incremente el número de éxitos académicos. Predicción:
+H5: Shocks de Productividad (Shock de Salud): El shock de salud se modela como un shock negativo a la productividad marginal de los insumos. Desde la perspectiva de la economía de la atención (Sims, 2003), una crisis de salud consume recursos cognitivos finitos, reduciendo la eficacia de cada hora de estudio. Este shock no cambia el estado del estudiante de inmune a vulnerable, sino que, para aquellos ya vulnerables, aumenta el número esperado de resultados adversos. Predicción:
+H6: Productividad del Capital Físico en el Margen (Espacio de Estudio): Para el grupo vulnerable, el rol de un espacio de estudio es teóricamente ambiguo a priori. Por un lado, puede ser un insumo productivo que eleva la productividad del tiempo de estudio (mitigando distracciones), lo que sugiere un efecto protector. Por otro lado, podría correlacionarse con mayores dificultades de aprendizaje subyacentes, actuando como un proxy de una menor productividad inherente. El signo del coeficiente resolverá empíricamente esta ambigüedad. Predicción (a resolver empíricamente):
+Materiales y Métodos
+Los datos utilizados en esta investigación fueron recolectados durante la primera semana de julio de 2025. La población objetivo se compone por los estudiantes matriculados en el segundo ciclo que hayan cursado el primer ciclo por primera vez en el período académico septiembre 2024 - febrero 2025, de las carreras de economía, administración de empresas, contabilidad y marketing de la FCEA de la Universidad de Cuenca. Esta delimitación busca garantizar la exposición homogénea al entorno universitario. La recolección de datos se realizó mediante una encuesta en línea. La muestra final, tras depurar datos, consta de 220 estudiantes, distribuidos entre las carreras mencionadas (Anexo C; Figura C.2).
+El diseño de la muestra buscó maximizar la validez externa de los resultados. Ante el acceso denegado a un listado único de estudiantes y el problema de traslape de estudiantes que se repiten en distintas clases, se descartó el Muestreo Aleatorio Simple. En su lugar, se implementó un Diseño Muestral por Conglomerados Monoetápico. En este diseño, las clases que conformaban el segundo ciclo de la FCEA fueron definidas como los conglomerados. Para garantizar que cada estudiante de la población objetivo tuviera la misma probabilidad de ser seleccionado, se empleó una técnica de muestreo con probabilidad proporcional al tamaño. Este método es el estándar para lograr un diseño EPSEM (Equal Probability of Selection Method), fundamental para obtener estimadores insesgados de los parámetros. El proceso resultó en la selección de conglomerados completos con dos propósitos: (1) reducir el problema del traslape, y (2) corregir el sesgo generado seleccionando los cursos de una lista acumulativa, garantizando que los cursos más grandes sean seleccionados frente a los pequeños, compensando la probabilidad de estudiantes que tomaban menos materias por causa de los prerrequisitos (Anexo A).
+El análisis es de nivel exploratorio-correlacional. Dada la estructura de la variable dependiente reprobadas —un conteo con un 42.7% de ceros (Anexo C; Figura C.1)—, la estrategia se centró en modelos para datos de conteo con exceso de ceros. Se consideraron tres modelos competidores: ZIP, Binomial Negativo Inflado en Ceros (ZINB) y el modelo Hurdle. La selección final del modelo se basó en criterios estadísticos, mostrados en la sección Resultados.
+Tabla 1
+Definición de Variables
+Fuente: Elaboración propia
+Resultados
+La Tabla 2 presenta las estadísticas descriptivas de variables clave. El 68.18% registra 0 horas trabajadas a la semana, por lo que se usa la moda como medida de tendencia (Tabla C.1). Además, el puntaje de ingreso promedio no muestra una diferencia significativa entre carreras (Tabla C.2).
+Tabla 2
+Descriptivos de las variables métricas
+Fuente: Elaboración propia
+La información de la Tabla 3 muestra la distribución porcentual de variables categóricas de interés.
+Tabla 3
+Descriptivos de las variables categóricas
+Fuente: Elaboración propia
+Selección del modelo
+La selección del modelo final se basó en un conjunto de pruebas de diagnóstico y un test gráfico de detección de heterocedasticidad (Anexo B):
+Test de Vuong: Se utilizó para comparar el modelo ZIP con un modelo Poisson estándar. El resultado (Z = 4.11, p < 0.000) rechazó contundentemente el modelo Poisson frente al modelo ZIP.
+Test de Sobredispersión: Para elegir entre ZIP y ZINB, se realizó el test de regresión de Cameron y Trivedi (2013). El coeficiente de la variable predictiva no fue significativo (p = 0.092), indicando la ausencia de sobredispersión significativa y favoreciendo al modelo ZIP.
+Test de Razón de Verosimilitud (LR): La prueba LR entre ZIP y ZINB (Prob > chi2 = 0.3003) no dieron soporte al modelo ZINB.
+Criterios de Información: Se compararon los criterios de Akaike (AIC) y Bayesiano (BIC) para ZIP, ZINB y HURDLE. El modelo ZIP presentó los valores más bajos tanto en AIC (634.90) como en BIC (682.41), mostrando su ventaja frente al resto.
+Criterio de ajuste del modelo: De acuerdo con el Anexo D, se realizó varias comparaciones de ajuste de pronóstico entre ZIP y otros posibles modelos, los resultados no mostraron mayor diferencia gráfica, lo que válida la elección del modelo ZIP.
+La Tabla 4 presenta el modelo ZIP que resultó altamente significativo en su conjunto (p<0.0009).
+Tabla 4
+Resultados del Modelo ZIP sobre Materias Reprobadas
+Fuente: Elaboración propia
+Interpretación de los Resultados
+El análisis se descompone en las dos partes constitutivas del modelo, que se corresponden con el marco teórico: la ecuación de inflación que modela la inmunidad y la ecuación de conteo que modela el resultado para el grupo en riesgo.
+Análisis de la Ecuación de Inflación: Los Determinantes de la Inmunidad (Tabla E.1)
+Esta ecuación modela la probabilidad de que un estudiante pertenezca al grupo para el cual el fracaso académico es un resultado estructuralmente nulo. Los hallazgos indican que esta inmunidad está fuertemente asociada a las dotaciones iniciales del estudiante.
+El capital cognitivo (puntaje_ingreso), se muestra como un pilar protector. Un aumento de 10 puntos en el examen de admisión incrementa la probabilidad de ser inmune en 3.17 puntos porcentuales (H1). De igual manera, los resultados sugieren que sufrir un shock de ingreso disminuye la probabilidad de pertenecer a este grupo protegido en 14.6 puntos porcentuales (H2).
+La elección de carrera muestra diferencias estructurales entre la carrera de administración de empresas y el resto de carreras contempladas (H3); posiblemente, pueda deberse a diferencias de mallas, sílabos y/o en los docentes. Este resultado debe ser tratado con cautela, ya que, como se discutirá en la sección de limitaciones, no fue posible corregir la endogeneidad por autoselección. Finalmente, el coeficiente de espacio de estudio (15.74) es tan elevado que indica un problema de cuasi-separación perfecta en los datos. Este resultado sugiere que un entorno de estudio adecuado es un componente estructural casi indispensable para la inmunidad (H2); pero, el alto coeficiente llama la atención, no se descarta un problema de especificación.
+Análisis de la Ecuación de Conteo: Las Herramientas de Supervivencia (Tabla E.2)
+Esta ecuación se centra en el grupo vulnerable y modela el número esperado de materias reprobadas. Para su interpretación se utilizan los Ratios de Tasa de Incidencia (IRR), obtenidos al exponenciar los coeficientes (), que indican el cambio porcentual en el resultado. Los resultados sugieren que la disciplina es una herramienta de supervivencia eficaz. Por cada punto que aumenta el índice de disciplina (H4), el número esperado de materias reprobadas disminuye en un 12.3% (IRR = 0.877). En contraste, los resultados muestran que un shock de salud (H5) incrementando el número esperado de materias reprobadas en 54.4% (IRR = 1.544).
+El hallazgo más revelador de esta sección es el efecto del espacio de estudio para este grupo (H6). Su presencia se asocia con un aumento del 58.9% en el número esperado de materias reprobadas (IRR = 1.589). Esta aparente contradicción no invalida la importancia del espacio, sino que sugiere un claro proceso de selección adversa: es probable que los estudiantes con mayores dificultades no observadas sean quienes más buscan un espacio de estudio dedicado como estrategia de compensación. En este contexto, la variable funciona como un marcador de una fragilidad preexistente. Finalmente, ni las horas de trabajo ni el tiempo en pantalla resultaron ser predictores estadísticamente significativos del fracaso académico para este grupo.
+Discusión y Conclusiones
+Este estudio propuso descomponer los factores que afectan el fracaso académico en dos procesos latentes, y los resultados empíricos refuerzan este marco dual.
+Los hallazgos expanden la literatura al demostrar que las variables no actúan de forma homogénea. Se sugiere que el capital inicial —cognitivo (puntaje de ingreso), físico (espacio de estudio) y contextual (ausencia de shocks de ingreso)— define si un estudiante entra al grupo en riesgo. Esto alinea los resultados con la teoría del capital humano, pero añade el matiz de que dicho capital no solo mejora la productividad del aprendizaje, sino que puede aislar del riesgo a un subgrupo de los estudiantes. El resultado más enriquecedor es el doble rol del espacio de estudio: un predictor de inmunidad y un indicador de mayor fracaso esperado entre los ya vulnerables.
+Respecto al grupo en riesgo, el resultado del rol protector de la disciplina es consistente con la literatura sobre habilidades no cognitivas. Sin embargo, el análisis del modelo dual sugiere una distinción entre los mecanismos de los shocks: mientras un shock de ingreso rompe la inmunidad, un shock de salud debilita a quienes ya están en riesgo.
+Implicaciones de Política Pública y Universitaria
+Los resultados de este estudio exploran posibilidades de diseño de políticas universitarias diferenciadas y efectivas. Para fortalecer la inmunidad, la resulta importancia del espacio de estudio sugiere no solo la necesidad de más espacios físicos, sino de garantizar que sean ambientes libres de contaminación visual y auditiva. Para mitigar la vulnerabilidad a los shocks de ingreso, la universidad podría implementar fondos de emergencia o programas de ayuda económica de acceso rápido que impidan que un evento adverso empuje a un estudiante al grupo de riesgo.
+Para los estudiantes que ya están en riesgo, los resultados recomiendan la inversión en tutorías académicas y talleres sobre hábitos de estudio para fortalecer la disciplina. Asimismo, el impacto de los shocks de salud sugiere la necesidad de contar con servicios de salud física accesibles, así como políticas académicas flexibles (ej. justificación de faltas o aplazamiento de evaluaciones) para quienes enfrentan crisis médicas. El hallazgo contraintuitivo sobre el espacio de estudio puede usarse como un sistema de alerta: un uso intensivo de estos recursos por parte de ciertos estudiantes puede ser una señal para que los servicios de bienestar estudiantil intervengan proactivamente.
+Limitaciones
+Una de las limitaciones de este trabajo es la endogeneidad no resuelta de algunas variables como carrera (al implicar autoselección), y las variables de disciplina y espacio de estudio también pueden ser endógenas. Se realizó una búsqueda exhaustiva en la base de datos de una variable instrumental válida, sin éxito. Hubo variables relevantes omitidas debido a la limitación de tiempo y la dificultad que conlleva medir efectivamente este tipo de variables no observables, tales como habilidad innata, motivación, la afinidad por la carrera, salud mental o calidad docente. Por lo tanto, los resultados asociados a estas variables deben entenderse únicamente como correlaciones parciales. Futuras investigaciones podrían superar este obstáculo utilizando diseños cuasiexperimentales o encontrando instrumentos exógenos, además de aumentar el número de variables recolectadas para pulir efectos. Por ejemplo, no solo preguntar si el estudiante cuenta con un espacio de estudio, sino también si lo usa.
+Además, la naturaleza transversal de los datos impide establecer causalidad definitiva. Se recomienda replicar el estudio longitudinal para seguir a una cohorte a lo largo del tiempo, para lograr un análisis causal robusto.
+Conclusión
+En conclusión, esta investigación sugiere la existencia de la dualidad planteada inicialmente en la pérdida de materias en primer ciclo. Se identificaron factores estructurales que provocan “inmunidad” para un grupo de estudiantes y factores que determinan el número de materias perdidas para quienes están en riesgo de reprobar. Este análisis exploratorio-correlacional indica que las intervenciones universitarias deben ser duales, enfocándose tanto en prevenir que los estudiantes entren al grupo “en riesgo” como en equipar mejor a aquellos que ya están en dicho grupo, por medio de procesos y obras que tomen en cuenta directamente las variables que determinan la pérdida de materias en primer ciclo para ambos grupos.
+Bibliografía
+Artunduaga Murillo M. Variables que influyen en el rendimiento académico en la universidad. Métodos de investigación y diagnóstico en educación (MIDE). Universidad Complutense de Madrid, España. 2008.
+Barca, A., Peralbo, M., Brenlla, J.C., Seijas, S., Muñoz, M.A. & Santamaría, S. (2003). Enfoques de aprendizaje, rendimiento académico y género en alumnos de educación secundaria (ESO): Un análisis diferencial. Psicología, educaçao e cultura, 2, 25-43.
+Becker, Gary (1964), Human capital: a theoretical and empirical analysis, with special reference to education, National Bureau of Economic Research, Londres.
+Cameron, A. C., & Trivedi, P. K. (2013). Regression analysis of count data (2nd ed.). Cambridge University Press.
+Heckman, J. J., & Rubinstein, Y. (2001). The importance of noncognitive skills: Lessons from the GED testing program. The American Economic Review, 91(2), 145–149. https://doi.org/10.1257/aer.91.2.145
+Heckman, J. J. (2007). The economics, technology, and neuroscience of human capability formation. Proceedings of the National Academy of Sciences, 104(33), 13250–13255. https://doi.org/10.1073/pnas.0701362104
+Miller, A. (1986). Performance impairment after failure: Mechanism and sex differences. Journal of Educational Psychology, 78(6), 486–491.
+OCDE. (2023). Education at a Glance 2023: OECD Indicators. OECD Publishing. https://doi.org/10.1787/d4da961c-en
+UNESCO. (2022). Replantear la educación superior para el desarrollo sostenible. Organización de las Naciones Unidas para la Educación, la Ciencia y la Cultura. https://unesdoc.unesco.org/ark:/48223/pf0000381650
+Sims, C. A. (2003). Implications of rational inattention. Journal of Monetary Economics, 50(3), 665–690. https://doi.org/10.1016/S0304-3932(03)00029-1
+Anexo A: Diseño Muestral
+Link de encuesta: https://papaya-taffy-7fe8b5.netlify.app/
+El marco muestral consistió en K = 56 conglomerados, divididos entre las cuatro carreras.
+Tabla A.1
+Distribución para Economía
+Fuente: Elaboración propia
+Tabla A.2
+Distribución para Contabilidad
+Fuente: Elaboración propia
+Tabla A.3
+Distribución para Marketing
+Fuente: Elaboración propia
+Tabla A.4
+Distribución para Administración de empresas
+Fuente:  Elaboración propia
+Tabla A.5
+Parámetros y Resultados del Cálculo Muestra para Contabilidad
+Fuente:  Elaboración propia
+Nota. La selección de los k = 2 conglomerados se realizaron mediante un muestreo sistemático con PPT. Se calculó un intervalo de selección a partir del listado de conglomerados y se eligió un punto de arranque aleatorio para identificar las unidades muestrales.
+Los conglomerados seleccionados para la carrera de Contabilidad y el resto de las carreras se detallan en la Tabla A.6. El tamaño final de la muestra para Contabilidad obtenido fue de 77 estudiantes, cumpliendo el objetivo de n = 63. Para el resto de las carreras se aplicó un proceso similar.
+Tabla A.6
+Tamaño final para de muestra para cada carrera
+Fuente:  Elaboración propia
+Anexo B: Pruebas de Diagnóstico del Modelo
+Tabla B.1
+Comparación de Modelos de Conteo
+Fuente: Elaboración propia
+Tabla B.2
+Pruebas de Especificación y Diagnóstico
+Fuente: Elaboración propia
+Figura B.1
+Residuos de Pearson frente a los valores predichos del modelo ZIP
+Fuente: Elaboración propia
+Anexo C: Estadísticos descriptivos
+Figura C.1
+Histograma del total de materias reprobadas
+Fuente: Elaboración propia
+Figura C.2
+Distribución de materias reprobadas por carrera
+Fuente: Elaboración propia
+Figura C.3
+Matriz de dispersión de variables métricas
+Fuente: Elaboración propia
+Tabla C.1
+Descriptivos de trabajo seccionado por su media
+Fuente: Elaboración propia
+Tabla C.2
+ANOVA para el puntaje de ingreso por carreras
+Fuente: Elaboración propia
+Anexo D: Ajuste de pronóstico
+Figura D.1
+Probabilidades observadas vs. predichas (Modelo ZIP)
+Fuente: Elaboración propia
+Figura D.2
+Probabilidades observadas vs. predichas (Modelo ZINB)
+Fuente: Elaboración propia
+Figura D.3
+Diferencias observadas–predichas (ZIP vs. ZINB)
+Fuente: Elaboración propia
+Figura D.4
+Comparación gráfica del ajuste de modelos de conteo (PRM, NBRM, ZIP y ZINB)
+Fuente: Elaboración propia
+Anexo D: Resultados de regresión
+Tabla E.1
+Efectos marginales de la probabilidad de no perder materias
+Fuente: Elaboración propia
+Tabla E.2
+Ecuación de conteo en términos de IRR
+Fuente: Elaboración propia

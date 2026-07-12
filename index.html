@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador académico - Economía UCuenca</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css?v=28">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Universidad de Cuenca - Carrera de Economía</p>
+      <h1>Simulador de aprobación, retraso, deserción y graduación</h1>
+      <p class="lead">Herramienta exploratoria para comparar escenarios de acompañamiento académico de una cohorte de ingreso aproximada de 600 estudiantes.</p>
+    </div>
+    <div class="header-card">
+      <span class="label">Cohorte inicial por defecto</span>
+      <strong>600</strong>
+      <span>editable en el panel</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="warning">
+      <strong>Advertencia metodológica.</strong>
+      Este es un modelo de simulación que intenta aproximarse a los datos y a la situación real de la carrera de Economía. Los resultados son proyecciones construidas a partir de supuestos y relaciones estadísticas; no representan datos oficiales ni efectos causales comprobados. La efectividad real deberá evaluarse con registros académicos y seguimiento de participantes.
+    </section>
+
+    <nav class="tabs" aria-label="Secciones del simulador">
+      <button class="tab active" data-tab="metodo">Método</button>
+      <button class="tab" data-tab="config">Configuración</button>
+      <button class="tab" data-tab="resultados">Resultados</button>
+      <button class="tab" data-tab="guia">Guía y fuentes</button>
+      <button class="tab" data-tab="materias">Materias y prerrequisitos</button>
+      <button class="tab" data-tab="evidencia">Análisis econométrico</button>
+      <button class="tab" data-tab="plan">Plan de trabajo</button>
+    </nav>
+
+    <section id="metodo" class="panel active">
+      <div class="grid two">
+        <article class="block">
+          <h2>Logica del modelo</h2>
+          <p>El simulador genera estudiantes con puntaje de ingreso, disciplina, asistencia, preparación previa, shocks de salud e ingreso, trabajo, pantalla, tutorías e inglés B1. Cada ciclo intenta cursar materias desbloqueadas por prerrequisitos. Si reprueba una materia que bloquea otra, el avance se retrasa hasta aprobarla.</p>
+          <p>La cohorte inicial entra con <strong>600 estudiantes</strong> por defecto. Los resultados se calculan con Monte Carlo para mostrar promedios, mínimos, máximos, desviación estándar e intervalo de simulación del 95%.</p>
+        </article>
+        <article class="block">
+          <h2>Fundamento econométrico</h2>
+          <p>La referencia conceptual es un Modelo Poisson Inflado en Ceros (ZIP): un grupo tiene mayor probabilidad de no reprobar ninguna materia por capital inicial y condiciones de estudio; otro grupo vulnerable enfrenta un conteo esperado de materias reprobadas asociado con disciplina y shocks.</p>
+          <ul>
+            <li>Mas disciplina se asocia con menor numero esperado de materias reprobadas.</li>
+            <li>Shock de salud se asocia con mayor reprobación esperada.</li>
+            <li>Shock de ingreso reduce la probabilidad de pertenecer al grupo protegido.</li>
+            <li>Puntaje de ingreso aumenta la probabilidad de pertenecer al grupo protegido.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="grid three">
+        <article class="block">
+          <h3>Fórmula de intervención</h3>
+          <p><code>Tasa ajustada = tasa inicial x [1 - (reducción relativa x cobertura)]</code></p>
+          <p>Si Matemáticas 1 tiene 60%, una reducción esperada de 28% y cobertura de 40%, la tasa ajustada base es 60% x [1 - 0.28 x 0.40] = 53.3% para estudiantes cubiertos por el plan.</p>
+        </article>
+        <article class="block">
+          <h3>Reduccion relativa vs. puntos porcentuales</h3>
+          <p>Reducir 10% una tasa de 60% significa pasar a 54%. Reducir 10 puntos porcentuales significa pasar a 50%. El simulador usa reducción relativa para no exagerar el efecto supuesto.</p>
+        </article>
+        <article class="block">
+          <h3>Limitaciones</h3>
+          <p>El estudio disponible es exploratorio y correlacional. Las tutorías, talleres o alertas tempranas se modelan como escenarios de política, no como efectos causales garantizados.</p>
+        </article>
+      </div>
+
+      <article class="block">
+        <h2>Formulas principales usadas</h2>
+        <p class="chart-note"><b>Lectura:</b> las fórmulas muestran cómo se convierten las tasas de reprobación, la cobertura del plan y los resultados de Monte Carlo en indicadores del tablero.</p>
+        <div class="formula-grid">
+          <div class="formula-card">
+            <b>Promedio Monte Carlo</b>
+            <code>E(Y) = (1 / R) * sum(Y_r)</code>
+            <span>R es el numero de repeticiones. El tablero reporta el promedio simulado.</span>
+          </div>
+          <div class="formula-card">
+            <b>Tasa ajustada por intervención</b>
+            <code>p* = p0 * [1 - (efectividad * cobertura)]</code>
+            <span>La reducción es relativa. Cobertura 40% significa que el plan alcanza al 40% del grupo objetivo.</span>
+          </div>
+          <div class="formula-card">
+            <b>Riesgo individual de reprobar</b>
+            <code>p_i = p* * exp[-0.1315 * ((disciplina_i - 5) / 1.5)] * shock_i</code>
+            <span>La disciplina entra estandarizada; mayor disciplina baja el riesgo esperado y los shocks de salud o ingreso pueden aumentarlo.</span>
+          </div>
+          <div class="formula-card">
+            <b>Modelo ZIP del trabajo</b>
+            <code>log(lambda_i) = beta0 + beta1 X_i + beta2 shock_i</code>
+            <span>Sirve como fundamento econométrico: algunos estudiantes tienen muchos ceros y otros acumulan reprobaciones.</span>
+          </div>
+          <div class="formula-card">
+            <b>Probabilidad de cero estructural</b>
+            <code>Pr(Y_i = 0) = 1 / [1 + exp(-(Z_i gamma))]</code>
+            <span>Separa estudiantes con muy baja probabilidad de reprobar de estudiantes con riesgo acumulado.</span>
+          </div>
+          <div class="formula-card">
+            <b>Tercera matrícula</b>
+            <code>Tercera_j = conteo unico(i con intento_ij = 3)</code>
+            <span>Cada estudiante cuenta una sola vez por materia. Se acota por abandono y prerrequisitos para no inflar estudiantes que ya no llegan al tercer intento.</span>
+          </div>
+          <div class="formula-card">
+            <b>Irregularidad académica</b>
+            <code>Irregulares ~= cohorte * 0.97</code>
+            <span>Es una referencia aproximada de Economía: estudiantes que perdieron al menos una materia o tuvieron segunda matrícula.</span>
+          </div>
+          <div class="formula-card">
+            <b>Embudo académico</b>
+            <code>Ciclo_k = estudiantes que alcanzan k; Graduación ~= C8 aprobado</code>
+            <span>Desde 5to se calibra con proporciones agregadas de estudios anteriores para cerrar con graduación.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="block">
+        <h2>Escenarios incluidos</h2>
+        <div class="scenario-list">
+          <div><b>0. Sin intervención</b><span>Tasas iniciales de reprobación.</span></div>
+          <div><b>1. Piloto realista</b><span>4 tutores, 2 clases mensuales y cobertura limitada por capacidad.</span></div>
+          <div><b>2. Realista</b><span>8 tutores, 4 clases mensuales y tutorías focalizadas.</span></div>
+          <div><b>3. Alta cobertura</b><span>12 tutores, 6 clases mensuales, seguimiento y apoyo mas amplio.</span></div>
+          <div><b>4. Personalizado</b><span>El usuario define cobertura, efectividad, talleres, B1 y tutores.</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="config" class="panel">
+      <div class="toolbar">
+        <button id="runBtn" class="primary">Ejecutar simulación</button>
+        <button id="compareBtn">Comparar escenarios</button>
+        <button id="resetBtn">Restablecer valores</button>
+        <button id="saveBtn">Guardar configuracion</button>
+        <button id="csvBtn">Descargar CSV</button>
+        <button id="excelBtn">Descargar Excel</button>
+        <button id="pdfBtn">Informe PDF</button>
+        <button id="printBtn">Imprimir tablero</button>
+      </div>
+
+      <div class="grid three">
+        <article class="block">
+          <h2>Cohorte y Monte Carlo</h2>
+          <label>Cohorte inicial
+            <input id="cohortSize" type="number" min="50" max="2000" value="600">
+          </label>
+          <label>Número de simulaciones (1000 por defecto para el informe)
+            <select id="repetitions">
+              <option>15</option>
+              <option>30</option>
+              <option>100</option>
+              <option>500</option>
+              <option selected>1000</option>
+              <option>5000</option>
+              <option>10000</option>
+            </select>
+          </label>
+          <label>Semilla aleatoria
+            <input id="seed" type="number" value="2026">
+          </label>
+          <label>Malla regular observada
+            <input id="maxTerms" type="number" min="8" max="8" value="8" readonly>
+          </label>
+        </article>
+
+        <article class="block">
+          <h2>Distribucion y B1</h2>
+          <label>Hombres (%)
+            <input id="malePct" type="number" min="0" max="100" step="0.1" value="57.1">
+          </label>
+          <label>Cumplimiento B1 esperado (%)
+            <input id="b1Pct" type="number" min="0" max="100" step="1" value="78">
+          </label>
+          <label class="check">
+            <input id="b1Gate" type="checkbox" checked>
+            B1 bloquea el ingreso a octavo ciclo
+          </label>
+          <label>Tasa base de abandono por ciclo (%)
+            <input id="dropoutBase" type="number" min="0" max="20" step="0.1" value="0.8">
+          </label>
+        </article>
+
+        <article class="block">
+          <h2>Escenario</h2>
+          <label>Escenario activo
+            <select id="scenarioSelect"></select>
+          </label>
+          <label>Cobertura tutorías (%)
+            <input id="coverage" type="number" min="0" max="100" step="1" value="40">
+          </label>
+          <label>Efectividad esperada relativa (%)
+            <input id="effectiveness" type="number" min="0" max="60" step="1" value="28">
+          </label>
+          <label>Mejora de disciplina por talleres
+            <input id="disciplineBoost" type="number" min="0" max="2" step="0.1" value="0.25">
+          </label>
+        </article>
+      </div>
+
+      <div class="grid three">
+        <article class="block">
+          <h2>Recursos de tutorías</h2>
+          <label>Tutores disponibles
+            <input id="tutors" type="number" min="0" max="200" value="8">
+          </label>
+          <label>Capacidad por tutoría
+            <input id="capacity" type="number" min="5" max="80" value="25">
+          </label>
+          <label>Frecuencia mensual de clases
+            <input id="classFreq" type="number" min="0" max="12" value="4">
+          </label>
+        </article>
+        <article class="block">
+          <h2>Shocks</h2>
+          <label>Probabilidad shock de salud (%)
+            <input id="healthShock" type="number" min="0" max="60" step="0.1" value="19.6">
+          </label>
+          <label>Probabilidad shock de ingreso (%)
+            <input id="incomeShock" type="number" min="0" max="80" step="0.1" value="48.2">
+          </label>
+          <label>Apoyo ante shock económico (%)
+            <input id="incomeSupport" type="number" min="0" max="100" value="25">
+          </label>
+        </article>
+        <article class="block">
+          <h2>Matriculas</h2>
+          <label>Factor de riesgo en segunda matrícula
+            <input id="secondFactor" type="number" min="0.2" max="1.5" step="0.05" value="0.50">
+          </label>
+          <label>Factor de riesgo en tercera matrícula
+            <input id="thirdFactor" type="number" min="0.2" max="1.5" step="0.05" value="0.30">
+          </label>
+          <label>Abandono si falla tercera (%)
+            <input id="thirdDropout" type="number" min="0" max="100" value="30">
+          </label>
+        </article>
+      </div>
+    </section>
+
+    <section id="resultados" class="panel">
+      <div id="status" class="status">Ejecuta la simulación para ver resultados.</div>
+      <div class="reading-note"><b>Lectura rápida:</b> modelo estimado para una cohorte de 600 ingresos y 21 graduados observados. Corre con 1000 repeticiones Monte Carlo; la pérdida/irregularidad usa una referencia agregada de Economía y la tercera matrícula se acota por abandono y prerrequisitos. Los supuestos provienen de estudios anteriores.</div>
+      <div id="progressWrap" class="progress-wrap" hidden>
+        <div class="progress-track"><div id="progressBar"></div></div>
+        <span id="progressText">0%</span>
+      </div>
+      <div id="kpis" class="kpi-grid"></div>
+      <article class="block">
+        <h2>Analisis automatico</h2>
+        <p id="analysisText"></p>
+      </article>
+      <div class="grid two">
+        <article class="block chart">
+          <h2>Embudo de estudiantes</h2>
+          <p class="chart-note"><b>Qué es:</b> muestra cuántas personas avanzan por ciclo hasta graduación. <b>Metodología:</b> el modelo estima estudiantes que al menos toman una materia de ese ciclo; de 1ro a 4to usa materias filtro y desde 5to usa proporciones agregadas de estudios anteriores para que 8vo coincida con graduación proyectada. <b>Uso:</b> ubicar el tramo donde más se reduce la cohorte.</p>
+          <div id="funnelChart"></div>
+        </article>
+        <article class="block chart">
+          <h2>Comparación de escenarios</h2>
+          <p class="chart-note"><b>Qué es:</b> compara graduados y abandono por escenario. <b>Metodología:</b> mantiene la misma cohorte y cambia cobertura, tutores, clases y efectividad; las etiquetas muestran estudiantes y porcentaje de cohorte. <b>Uso:</b> ver si el plan mejora frente a no intervenir.</p>
+          <div id="scenarioChart"></div>
+        </article>
+      </div>
+      <div class="grid two">
+        <article class="block chart">
+          <h2>Aprobación y reprobación por materia</h2>
+          <p class="chart-note"><b>Qué es:</b> barras de aprobación esperada y reprobación esperada por asignatura. <b>Metodología:</b> estudiantes que cursan la materia x tasa calibrada de reprobación; la etiqueta muestra solo el porcentaje de reprobación. <b>Uso:</b> identificar materias filtro para tutorías.</p>
+          <div id="courseBarChart"></div>
+        </article>
+        <article class="block chart">
+          <h2>Mapa de calor de reprobación</h2>
+          <p class="chart-note"><b>Qué es:</b> una lectura visual del riesgo base por ciclo y materia. <b>Metodología:</b> verde significa menor riesgo, amarillo riesgo medio y rojo mayor riesgo antes de la intervención. <b>Uso:</b> ubicar rápidamente filtros académicos y cadenas que generan retraso.</p>
+          <div id="heatmapChart"></div>
+        </article>
+      </div>
+      <div class="grid two">
+        <article class="block chart">
+          <h2>Supervivencia académica</h2>
+          <p class="chart-note"><b>Qué es:</b> porcentaje de estudiantes que permanece o avanza hasta cada ciclo. <b>Metodología:</b> usa el mismo embudo calibrado para que la línea no contradiga graduación. <b>Uso:</b> medir permanencia y avance oportuno.</p>
+          <div id="survivalChart"></div>
+        </article>
+      </div>
+      <div class="grid two">
+        <article class="block chart">
+          <h2>Tercera matrícula</h2>
+          <p class="chart-note"><b>Qué es:</b> estudiantes únicos que llegan al tercer intento en cada materia. <b>Metodología:</b> una persona cuenta una sola vez por materia; el valor se limita por abandono y prerrequisitos, por eso no debe superar 20 por asignatura en esta lectura. <b>Uso:</b> decidir dónde intervenir antes de que el estudiante llegue a tercera matrícula.</p>
+          <div id="thirdChart"></div>
+        </article>
+        <article class="block chart">
+          <h2>Retraso por asignatura</h2>
+          <p class="chart-note"><b>Qué es:</b> estudiantes afectados por reprobar una asignatura. <b>Metodología:</b> usa reprobación simulada y prerrequisitos de la malla; la etiqueta muestra solo el porcentaje de la cohorte afectada. <b>Uso:</b> priorizar materias que bloquean avance, no solo materias con muchos inscritos.</p>
+          <div id="delayChart"></div>
+        </article>
+      </div>
+      <div class="grid two">
+        <article class="block chart">
+          <h2>Graduados por sexo</h2>
+          <p class="chart-note"><b>Qué es:</b> distribución observada de graduados. <b>Metodología:</b> no se simula: sale de la imagen enviada, 12 hombres y 9 mujeres. <b>Uso:</b> separar dato real de resultados proyectados.</p>
+          <div id="sexChart"></div>
+        </article>
+        <article class="block chart">
+          <h2>Impacto de propuestas</h2>
+          <p class="chart-note"><b>Qué es:</b> resumen del efecto esperado del escenario activo. <b>Metodología:</b> compara contra el escenario sin intervención con la misma lógica de simulación; la efectividad realista es una reducción relativa de 25% a 30% entre participantes. <b>Uso:</b> traducir tutorías y clases en indicadores del plan.</p>
+          <div id="impactChart"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="guia" class="panel">
+      <article class="block source-card">
+        <h2>De donde salen los datos y como leerlos</h2>
+        <div class="table-wrap compact-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Dato del tablero</th>
+                <th>Fuente usada</th>
+                <th>Qué significa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Graduados observados: 21</td><td>Imagen de Power BI enviada por ti.</td><td>Dato real de referencia: 21 graduados en Economía, 12 hombres y 9 mujeres.</td></tr>
+              <tr><td>Cohorte inicial: 600</td><td>Supuesto que indicaste: aproximadamente ingresan 600 estudiantes.</td><td>Punto de partida de la simulación; se puede editar en Configuración.</td></tr>
+              <tr><td>Malla y prerrequisitos</td><td>Malla Economía 2025 cargada en la tabla de materias.</td><td>Si una materia se reprueba, bloquea las materias que la tienen como prerrequisito.</td></tr>
+              <tr><td>Tasas de reprobación por materia</td><td>Trabajo final de Econometría II y estudios anteriores; los valores quedan como supuestos editables.</td><td>No son cifras oficiales publicadas. El trabajo aporta el marco ZIP, los shocks y la disciplina; la malla aporta prerrequisitos y materias filtro.</td></tr>
+              <tr><td>Cobertura 40%</td><td>Escenario realista con 8 tutores, capacidad por tutoría y clases mensuales.</td><td>Alcanza al 40% de la cohorte o de estudiantes en materias filtro; no significa reducir 40 puntos porcentuales la reprobación.</td></tr>
+              <tr><td>Meta 25% a 30%</td><td>Propuesta prudente del plan con seguimiento y datos.</td><td>Busca reducir relativamente la tasa de pérdida entre participantes. Las emociones pueden mejorar el resultado, pero no se miden directamente en este modelo.</td></tr>
+              <tr><td>Irregularidad aproximada 97%</td><td>Referencia agregada indicada para Economía.</td><td>Se lee como estudiantes que perdieron al menos una materia o tuvieron segunda matrícula; no se suma con activos, graduados y abandono porque son categorías que pueden cruzarse.</td></tr>
+              <tr><td>Trabajo Econometría II</td><td>Muestra FCEA n = 220, julio 2025; Economía representa 25.45% de la muestra.</td><td>Se usa para justificar el modelo dual: grupo protegido vs. grupo vulnerable, no para afirmar causalidad.</td></tr>
+              <tr><td>Tercera matrícula</td><td>Resultado simulado con cohorte, tasas, abandono, prerrequisitos y escenario activo.</td><td>Estudiantes que llegan al tercer intento en una materia específica; no se suma como si fueran graduados. Ejemplo calibrado: Contabilidad de Costos queda cerca de 4 estudiantes.</td></tr>
+              <tr><td>Retraso por asignatura</td><td>Resultado simulado con la cadena de prerrequisitos.</td><td>Estudiantes cuyo avance queda afectado por reprobar esa materia y por las materias que dependen de ella.</td></tr>
+              <tr><td>Tiempo de graduación</td><td>Proyección del simulador.</td><td>Sin perder materias la carrera dura 8 ciclos; si pierden materias, el tiempo sube por repetición y bloqueos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <article class="block source-card">
+        <h2>Guía metodológica de gráficos</h2>
+        <div class="table-wrap compact-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Grafico</th>
+                <th>Como se calcula</th>
+                <th>Para que sirve</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Embudo de estudiantes</td><td>Cuenta avance esperado por ciclo. Desde 5to hasta 8vo usa proporciones agregadas de estudios anteriores para que ciclo 8 cierre con graduación.</td><td>Ver dónde se reduce más la cohorte.</td></tr>
+              <tr><td>Comparación de escenarios</td><td>Corre los escenarios sin intervención, piloto, realista, alta cobertura y personalizado.</td><td>Comparar graduación y abandono bajo distintas propuestas.</td></tr>
+              <tr><td>Aprobación y reprobación por materia</td><td>Usa estudiantes que cursan la materia y aplica la tasa calibrada por asignatura. La etiqueta del gráfico muestra solo porcentaje para no confundirlo con graduados.</td><td>Detectar materias filtro.</td></tr>
+              <tr><td>Mapa de calor</td><td>Usa riesgo base calibrado por materia antes de aplicar tutorías.</td><td>Leer rápido el riesgo: verde bajo, amarillo medio, rojo alto.</td></tr>
+              <tr><td>Supervivencia académica</td><td>Mide el porcentaje que permanece o avanza por ciclo.</td><td>Evaluar permanencia y avance oportuno.</td></tr>
+              <tr><td>Segunda y tercera matrícula</td><td>Segunda matrícula usa el 97% aproximado como repetición general de la cohorte. Tercera matrícula se lee por materia específica y queda acotada por abandono y prerrequisitos.</td><td>Separar repetición general de riesgo crítico por asignatura.</td></tr>
+              <tr><td>Retraso por asignatura</td><td>Cuenta estudiantes afectados por reprobar una materia y sus prerrequisitos; el gráfico muestra el porcentaje de cohorte afectada.</td><td>Ubicar materias que generan atraso.</td></tr>
+              <tr><td>Graduados por sexo</td><td>Usa directamente el dato observado: 12 hombres y 9 mujeres.</td><td>Mostrar la composición real de graduados enviada.</td></tr>
+              <tr><td>Impacto de propuestas</td><td>Compara el escenario activo contra el escenario sin intervención.</td><td>Ver reprobaciones evitadas, menos tercera matrícula y capacidad requerida.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section id="materias" class="panel">
+      <article class="block">
+        <h2>Tabla inicial de tasas y prerrequisitos</h2>
+        <p>Las tasas son supuestos referenciales editables. Los prerrequisitos fueron cargados desde la malla 2025; si una materia prerrequisito se reprueba, el simulador bloquea automáticamente las dependientes.</p>
+        <div class="table-wrap">
+          <table id="subjectsTable"></table>
+        </div>
+      </article>
+    </section>
+
+    <section id="evidencia" class="panel">
+      <article class="block">
+        <h2>Analisis de estudio previo</h2>
+        <p>Este bloque resume la evidencia econométrica usada como referencia del simulador. No se copian bases sensibles; se muestran resultados agregados, pruebas del modelo y parámetros interpretables.</p>
+        <div class="table-wrap compact-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Dato del trabajo</th>
+                <th>Valor</th>
+                <th>Uso en el simulador</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Muestra final</td>
+                <td>220 estudiantes FCEA</td>
+                <td>Referencia empirica para perfiles iniciales y variabilidad de estudiantes.</td>
+              </tr>
+              <tr>
+                <td>Participación de Economía</td>
+                <td>25.45% de la muestra; 56 estudiantes en descriptivos por carrera.</td>
+                <td>Justifica adaptar la lectura a Economía sin decir que toda la FCEA se comporta igual.</td>
+              </tr>
+              <tr>
+                <td>Materias reprobadas</td>
+                <td>Media 1.164; desviacion 1.398; rango 0 a 6.</td>
+                <td>Calibra que la reprobación existe, pero no todos los estudiantes reprueban.</td>
+              </tr>
+              <tr>
+                <td>Exceso de ceros</td>
+                <td>42.7% no reprueba materias en primer ciclo.</td>
+                <td>Justifica usar un modelo ZIP: grupo protegido y grupo vulnerable.</td>
+              </tr>
+              <tr>
+                <td>Shock de salud</td>
+                <td>19.55% reporta shock severo.</td>
+                <td>Aumenta el riesgo del grupo vulnerable dentro de la simulación.</td>
+              </tr>
+              <tr>
+                <td>Shock de ingreso</td>
+                <td>48.18% reporta caída severa de ingreso.</td>
+                <td>Reduce la probabilidad de pertenecer al grupo protegido.</td>
+              </tr>
+              <tr>
+                <td>Trabajo remunerado</td>
+                <td>68.18% registra 0 horas; 31.81% mas de 20 horas.</td>
+                <td>Se mantiene como restriccion de tiempo, aunque no fue significativo en conteo.</td>
+              </tr>
+              <tr>
+                <td>Modelo elegido</td>
+                <td>ZIP: AIC 634.90; BIC 682.41; Vuong Z = 4.11.</td>
+                <td>Da soporte al marco de dos grupos frente a Poisson simple.</td>
+              </tr>
+              <tr>
+                <td>Disciplina</td>
+                <td>IRR 0.8768; p = 0.022.</td>
+                <td>Cada punto adicional se asocia con 12.3% menos materias reprobadas esperadas.</td>
+              </tr>
+              <tr>
+                <td>Shock de salud</td>
+                <td>IRR 1.5442; p = 0.020.</td>
+                <td>Se asocia con 54.4% mas materias reprobadas esperadas en estudiantes vulnerables.</td>
+              </tr>
+              <tr>
+                <td>Shock de ingreso</td>
+                <td>Efecto marginal -0.1455; p = 0.010.</td>
+                <td>Se usa como factor que debilita la inmunidad académica inicial.</td>
+              </tr>
+              <tr>
+                <td>Puntaje de ingreso</td>
+                <td>Efecto marginal 0.0032; p = 0.000.</td>
+                <td>Se interpreta como capital cognitivo inicial protector.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <div class="grid two">
+        <article class="block">
+          <h2>Variables del estudio previo</h2>
+          <div id="variablesTable" class="table-wrap"></div>
+        </article>
+        <article class="block">
+          <h2>Interpretación econométrica para el simulador</h2>
+          <ul>
+            <li><b>Disciplina:</b> en el grupo vulnerable, cada punto adicional se asocio con 12.3% menos materias reprobadas esperadas. En el simulador esto baja el riesgo individual, pero no elimina el riesgo de materias filtro.</li>
+            <li><b>Shock de salud:</b> se asocio con 54.4% mas materias reprobadas esperadas. Por eso el modelo permite que un estudiante con shock acumule mas retraso aun si la tasa base de la materia no cambia.</li>
+            <li><b>Shock de ingreso:</b> redujo la probabilidad de pertenecer al grupo protegido. Se interpreta como pérdida de estabilidad para estudiar, no como efecto causal garantizado.</li>
+            <li><b>Puntaje de ingreso:</b> aumentó la probabilidad de pertenecer al grupo protegido. Funciona como capital académico inicial dentro del modelo.</li>
+            <li><b>Pantalla y trabajo:</b> no fueron significativos en la ecuacion final de conteo; por eso se mantienen como controles suaves y no como motores principales del resultado.</li>
+            <li><b>Espacio de estudio:</b> debe interpretarse con cautela por posible selección adversa y cuasi-separación. No se usa para afirmar que tener espacio aumente la reprobación.</li>
+            <li><b>Lectura general:</b> el ZIP separa estudiantes con baja probabilidad de reprobar de estudiantes vulnerables que pueden acumular pérdidas. Por eso el simulador combina tasas por materia, shocks, disciplina y prerrequisitos.</li>
+          </ul>
+        </article>
+      </div>
+      <article class="block">
+        <div class="study-head">
+          <div>
+            <h2>Tablas importantes del estudio</h2>
+            <p>Selecciona una tabla y filtra variables, pruebas o asignaturas. Se mantienen los valores centrales del trabajo final y se agrega una lectura de como se conectan con el simulador.</p>
+          </div>
+          <div class="study-controls">
+            <label>Tabla
+              <select id="econTableSelect"></select>
+            </label>
+            <label>Buscar
+              <input id="econSearch" type="search" placeholder="disciplina, ZIP, Economía...">
+            </label>
+          </div>
+        </div>
+        <div id="econTableNote" class="study-note"></div>
+        <div id="econStudyTable" class="table-wrap"></div>
+      </article>
+      <div class="image-grid">
+        <figure>
+          <img src="assets/image2.png" alt="Distribucion de materias reprobadas">
+          <figcaption>Exceso de ceros: una parte importante de estudiantes no reprueba materias, lo que justifica conceptualmente el ZIP.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/image3.png" alt="Distribucion por carrera">
+          <figcaption>Heterogeneidad por carrera: se usa solo como referencia exploratoria, no como causalidad.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/image5.png" alt="Ajuste ZIP observado y predicho">
+          <figcaption>Ajuste ZIP: probabilidades observadas y predichas del numero de materias reprobadas.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/graduados-powerbi.png" alt="Graduados por sexo y carrera">
+          <figcaption>Referencia visual enviada: 21 graduados, 12 hombres y 9 mujeres. El sexo se muestra en resultados, pero no se usa para modificar aprobación.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="plan" class="panel">
+      <article class="block">
+        <h2>Propuestas priorizadas del Plan de Trabajo</h2>
+        <p>Esta tabla resume las propuestas con mayor relación directa con reprobación, retraso, tercera matrícula y graduación. Es una selección priorizada dentro de un plan más amplio: también existen propuestas de integración, charlas, bienestar, vinculación, comunicación y vida universitaria.</p>
+        <div class="table-wrap">
+          <table class="priority-table">
+            <thead>
+              <tr>
+                <th>Prioridad</th>
+                <th>Propuesta</th>
+                <th>Problema que atiende</th>
+                <th>Accion concreta</th>
+                <th>Recursos realistas</th>
+                <th>Indicador para evaluar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank">1</span></td>
+                <td>Tutorías focalizadas en materias filtro</td>
+                <td>Alta reprobación en Matemáticas, Álgebra, Estadística, Econometría y Microeconomía.</td>
+                <td>Grupos de apoyo antes de parciales y finales, con mini sílabos y temas priorizados por formularios.</td>
+                <td>8 tutores, 25 cupos por tutoría, 4 sesiones mensuales.</td>
+                <td>Aprobación de participantes vs. no participantes; tercera matrícula evitada.</td>
+              </tr>
+              <tr>
+                <td><span class="rank">2</span></td>
+                <td>Clases introductorias gratuitas</td>
+                <td>Brechas iniciales en software, matemáticas, álgebra y estadística.</td>
+                <td>Semana de nivelación práctica para R, Stata, Excel, programación básica y repaso cuantitativo.</td>
+                <td>Estudiantes de ciclos altos, laboratorio, videos grabados.</td>
+                <td>Asistencia, diagnóstico inicial/final y aprobación en primer ciclo.</td>
+              </tr>
+              <tr>
+                <td><span class="rank">3</span></td>
+                <td>Portal web académico y repositorio</td>
+                <td>Falta de material ordenado y dudas sobre docentes, matrículas y recursos.</td>
+                <td>Banco de resoluciones, examenes pasados, buzón de consultas, videos de software y materiales por materia.</td>
+                <td>Equipo web, delegados por materia, validacion docente cuando sea posible.</td>
+                <td>Materiales publicados, consultas atendidas, visitas al portal.</td>
+              </tr>
+              <tr>
+                <td><span class="rank">4</span></td>
+                <td>Sistema de alerta temprana</td>
+                <td>No se identifica a tiempo a estudiantes con baja asistencia, shocks o segunda/tercera matrícula.</td>
+                <td>Formulario de riesgo, seguimiento de asistencia, canalización a tutorías y bienestar estudiantil.</td>
+                <td>Coordinacion con docentes, asociacion y direccion de carrera.</td>
+                <td>Estudiantes contactados, asistencia recuperada, permanencia por ciclo.</td>
+              </tr>
+              <tr>
+                <td><span class="rank">5</span></td>
+                <td>Bienvenida académica a nuevo ingreso</td>
+                <td>Estudiantes nuevos desconocen la malla, prerrequisitos y materias más exigentes.</td>
+                <td>Presentacion de la carrera, recorrido por facultad, explicacion de cadenas y recomendaciones.</td>
+                <td>Auditorio, presentacion breve, estudiantes mentores.</td>
+                <td>Participación, satisfacción y uso posterior de tutorías.</td>
+              </tr>
+              <tr>
+                <td><span class="rank">6</span></td>
+                <td>Apoyo a estudiantes vulnerables</td>
+                <td>Shocks económicos o condiciones familiares elevan riesgo de abandono.</td>
+                <td>Gestion de ayudas, orientacion a servicios universitarios y apoyo a estudiantes foraneos.</td>
+                <td>Empresas privadas, bienestar universitario, asociacion.</td>
+                <td>Casos atendidos, continuidad académica y reducción de abandono temporal.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <article class="block plan-brief">
+        <h2>Decisión académica con datos</h2>
+        <p>El plan parte de una idea simple: decidir con datos. Las propuestas priorizan materias filtro, consultas repetidas, baja asistencia, segunda o tercera matrícula, adaptación y alertas de bienestar.</p>
+        <div class="insight-list">
+          <div><b>Observar</b><span>Asistencia, notas, diagnósticos, intentos de matrícula, consultas y permanencia por ciclo.</span></div>
+          <div><b>Priorizar</b><span>Dirigir recursos a materias filtro y grupos con mayor riesgo, no solo a actividades generales.</span></div>
+          <div><b>Ajustar</b><span>Actualizar el simulador cada ciclo para que las metas cambien con evidencia real.</span></div>
+        </div>
+        <p class="model-note">Los valores presentados son estimaciones obtenidas mediante un modelo matemático de simulación, por lo que pueden variar ante factores externos, como las emociones y otras variables no incluidas en la modelación. Aun así, los resultados sirven como una herramienta de orientación para tomar decisiones que contribuyan a mejorar el bienestar estudiantil, priorizando las necesidades más relevantes de la vida universitaria.</p>
+      </article>
+      <article class="block">
+        <h2>Tabla comparativa de indicadores</h2>
+        <p>Convierte cada propuesta en indicadores medibles para comparar antes/después y justificar decisiones con evidencia.</p>
+        <div class="table-wrap">
+          <table class="priority-table">
+            <thead>
+              <tr>
+                <th>Propuesta</th>
+                <th>Indicador principal</th>
+                <th>Meta cuantitativa</th>
+                <th>Comparación necesaria</th>
+                <th>Dato mínimo a registrar</th>
+                <th>Lectura esperada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tutorías focalizadas</td>
+                <td>Aprobación de participantes vs. no participantes; tercera matrícula evitada.</td>
+                <td>Reducir 25%-30% la reprobación relativa en participantes regulares.</td>
+                <td>Antes/después y participantes/no participantes en la misma materia.</td>
+                <td>Materia, asistencia a tutorías, intento de matrícula, nota final.</td>
+                <td>Debe bajar reprobación y reducir estudiantes que pasan a tercera matrícula.</td>
+              </tr>
+              <tr>
+                <td>Clases introductorias</td>
+                <td>Asistencia, diagnóstico inicial/final y aprobación en primer ciclo.</td>
+                <td>Mejorar 28% el puntaje diagnóstico o la aprobación inicial.</td>
+                <td>Diagnóstico inicial vs. diagnóstico final; aprobación de asistentes vs. no asistentes.</td>
+                <td>Asistencia, puntaje diagnóstico, materia cursada, resultado final.</td>
+                <td>Debe mejorar preparación en Matemáticas, Álgebra, Estadística y software.</td>
+              </tr>
+              <tr>
+                <td>Portal académico</td>
+                <td>Materiales publicados, consultas atendidas y visitas al portal.</td>
+                <td>Cubrir 80% de materias filtro con recursos y consultas registradas.</td>
+                <td>Uso del portal vs. rendimiento posterior en materias filtro.</td>
+                <td>Usuario, materia consultada, recurso usado, fecha, resultado académico.</td>
+                <td>Debe aumentar acceso a material y reducir dudas repetidas.</td>
+              </tr>
+              <tr>
+                <td>Alerta temprana</td>
+                <td>Estudiantes contactados, asistencia recuperada y permanencia por ciclo.</td>
+                <td>Reducir 15% abandono temporal o retraso entre alertas atendidas.</td>
+                <td>Estudiantes con alerta atendida vs. estudiantes con alerta no atendida.</td>
+                <td>Tipo de alerta, fecha de contacto, derivación, seguimiento.</td>
+                <td>Debe reducir abandono temporal y retraso acumulado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <article class="block">
+        <h2>Meta prudente y medible</h2>
+        <p>Durante el primer año de aplicación se buscará reducir entre 25% y 30% de manera relativa la reprobación entre estudiantes que participen regularmente en tutorías y acompañamiento. Esta es una meta institucional estimada, no un efecto garantizado. Puede mejorar o bajar por factores exógenos, especialmente emociones, motivación y condiciones personales que el modelo no mide de forma directa. Por eso, el seguimiento debe combinar resultados académicos, asistencia, permanencia y bienestar estudiantil.</p>
+        <h3>Indicadores sugeridos</h3>
+        <div class="chips">
+          <span>Estudiantes atendidos</span><span>Asistencia a tutorías</span><span>Aprobación de participantes</span><span>Aprobación de no participantes</span><span>Estudiantes que evitan tercera matrícula</span><span>Satisfacción</span><span>Materiales publicados</span><span>Consultas atendidas</span><span>Cursos cubiertos</span><span>Diferencia antes/después</span>
+        </div>
+      </article>
+      <article class="block">
+        <h2>Evaluacion futura con datos reales</h2>
+        <ol>
+          <li>Registrar participantes por materia, matrícula, asistencia y tutorías recibidas.</li>
+          <li>Medir calificaciones antes y después y comparar participantes con no participantes similares.</li>
+          <li>Actualizar tasas del simulador cada ciclo con registros reales.</li>
+          <li>Explorar logit, Poisson, binomial negativo, ZIP, supervivencia, diferencias en diferencias y emparejamiento por puntaje de propensión.</li>
+        </ol>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>Simulador local - escenarios exploratorios, no datos oficiales.</span>
+  </footer>
+  <script src="precomputed-results.js?v=28"></script>
+  <script src="app.js?v=28"></script>
+</body>
+</html>
